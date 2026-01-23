@@ -2,20 +2,35 @@ import { useState } from 'react';
 
 interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label: string;
+    variant?: 'auth' | 'profile';
 }
 
-export function PasswordInput({ label, id, ...props }: PasswordInputProps) {
+export function PasswordInput({ label, id, variant = 'auth', className, ...props }: PasswordInputProps) {
     const [showPassword, setShowPassword] = useState(false);
+
+    const isProfile = variant === 'profile';
 
     return (
         <div className="group">
-            <label htmlFor={id} className="block text-sm font-medium text-stone-200 mb-2">
+            <label 
+                htmlFor={id} 
+                className={`block text-sm font-medium mb-2 ${
+                    isProfile ? 'text-stone-700 font-semibold' : 'text-stone-200'
+                }`}
+            >
                 {label}
             </label>
             <div className="relative">
                 {/* Lock Icon */}
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <svg className="w-5 h-5 text-emerald-400 group-focus-within:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg 
+                        className={`w-5 h-5 transition-colors ${
+                            isProfile ? 'text-stone-400 group-focus-within:text-emerald-500' : 'text-emerald-400 group-focus-within:text-white'
+                        }`} 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                    >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                 </div>
@@ -24,13 +39,19 @@ export function PasswordInput({ label, id, ...props }: PasswordInputProps) {
                     {...props}
                     id={id}
                     type={showPassword ? "text" : "password"}
-                    className="w-full pl-12 pr-12 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-stone-300/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
+                    className={`w-full pl-12 pr-12 py-3 transition-all duration-300 rounded-xl text-sm focus:outline-none focus:ring-2 ${
+                        isProfile 
+                            ? 'bg-white border border-stone-200 text-stone-900 placeholder-stone-300 focus:ring-emerald-500/20 focus:border-emerald-500' 
+                            : 'bg-white/5 border border-white/10 text-white placeholder-stone-300/40 focus:ring-emerald-500/50 focus:border-transparent backdrop-blur-sm'
+                    } ${className || ''}`}
                 />
                 
                 <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-stone-400 hover:text-white transition-colors focus:outline-none"
+                    className={`absolute inset-y-0 right-0 pr-4 flex items-center transition-colors focus:outline-none ${
+                        isProfile ? 'text-stone-400 hover:text-stone-600' : 'text-stone-400 hover:text-white'
+                    }`}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                     {showPassword ? (

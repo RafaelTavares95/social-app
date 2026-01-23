@@ -1,18 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
-import { LogOut, Settings, ChevronDown, User, Languages } from 'lucide-react';
+import { LogOut, ChevronDown, User, Languages } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { User as UserType } from '../../types/auth';
 
 interface HeaderProps {
     user: UserType;
     onLogout: () => void;
-    onEditProfile: () => void;
 }
 
-export function Header({ user, onLogout, onEditProfile }: HeaderProps) {
+export function Header({ user, onLogout }: HeaderProps) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
 
     const toggleLanguage = () => {
         const newLang = i18n.language === 'en' ? 'pt' : 'en';
@@ -34,7 +35,10 @@ export function Header({ user, onLogout, onEditProfile }: HeaderProps) {
         <header className="w-full h-16 backdrop-blur-md bg-white/70 border-b border-stone-200 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between">
                 {/* Application Name */}
-                <div className="flex items-center space-x-2 group cursor-pointer">
+                <Link 
+                    to="/"
+                    className="flex items-center space-x-2 group cursor-pointer"
+                >
                     <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -43,7 +47,7 @@ export function Header({ user, onLogout, onEditProfile }: HeaderProps) {
                     <span className="text-xl font-bold text-emerald-950 tracking-tight">
                         {t('header.appTitle')}<span className="text-emerald-600 font-medium">{t('header.appSubtitle')}</span>
                     </span>
-                </div>
+                </Link>
 
                 {/* User Area */}
                 <div className="relative" ref={dropdownRef}>
@@ -88,12 +92,12 @@ export function Header({ user, onLogout, onEditProfile }: HeaderProps) {
                             <button
                                 onClick={() => {
                                     setIsDropdownOpen(false);
-                                    onEditProfile();
+                                    navigate('/profile');
                                 }}
                                 className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-stone-600 hover:bg-stone-50 hover:text-emerald-700 transition-colors text-left"
                             >
-                                <Settings className="w-4 h-4 text-emerald-500" />
-                                <span>{t('header.editProfile')}</span>
+                                <User className="w-4 h-4 text-emerald-500" />
+                                <span>{t('header.profile')}</span>
                             </button>
 
                             <button

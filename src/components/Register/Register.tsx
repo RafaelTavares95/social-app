@@ -1,15 +1,16 @@
 import { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../../services/auth.service';
 import { PasswordInput } from '../ui/PasswordInput';
 
 interface RegisterProps {
-    onSwitchToLogin: () => void;
 }
 
-export function Register({ onSwitchToLogin }: RegisterProps) {
+export function Register({ }: RegisterProps) {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -20,10 +21,19 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
         onSuccess: () => {
             console.log('Registration successful');
             alert(t('auth.accountCreatedSuccess'));
-            onSwitchToLogin();
+            navigate('/login');
         },
         onError: (error: any) => {
-            setErrorMessage(error.response?.data?.detail || t('auth.createAccountError'));
+            const detail = error.response?.data?.detail;
+            const message = typeof detail === 'string' 
+                ? detail 
+                : Array.isArray(detail) 
+                    ? detail[0]?.msg || t('auth.createAccountError')
+                    : typeof detail === 'object' && detail?.msg
+                        ? detail.msg
+                        : t('auth.createAccountError');
+            
+            setErrorMessage(message);
         }
     });
 
@@ -202,12 +212,12 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                 <div className="mt-8 text-center">
                     <p className="text-stone-300 text-sm">
                         {t('auth.alreadyHaveAccount')}{' '}
-                        <button 
-                            onClick={onSwitchToLogin}
+                        <Link 
+                            to="/login"
                             className="text-white font-semibold hover:text-stone-200 transition-colors bg-transparent border-none p-0 cursor-pointer"
                         >
                             {t('auth.signIn')}
-                        </button>
+                        </Link>
                     </p>
                 </div>
             </div>

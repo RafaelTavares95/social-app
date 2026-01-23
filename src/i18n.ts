@@ -34,6 +34,7 @@ const resources = {
       },
       header: {
         editProfile: 'Edit Profile',
+        profile: 'Profile',
         logout: 'Logout',
         appTitle: 'Social',
         appSubtitle: 'App',
@@ -52,10 +53,34 @@ const resources = {
         explore: 'Explore',
         alertEditProfile: 'Edit profile feature is under development.',
       },
+      errors: {
+        title: 'Something went wrong',
+        subtitle: "We're having trouble connecting to our servers.",
+        retry: 'Try Again',
+        details: 'Error Details',
+        backToLogin: 'Back to Login',
+      },
       common: {
         language: 'Language',
         english: 'English',
         portuguese: 'Portuguese',
+        save: 'Save',
+        cancel: 'Cancel',
+        loading: 'Loading...',
+        success: 'Success',
+        error: 'Error',
+      },
+      profile: {
+        editTitle: 'Edit Profile',
+        editSubtitle: 'Update your account information',
+        nameLabel: 'Full Name',
+        passwordLabel: 'New Password (leave blank to keep current)',
+        updateSuccess: 'Profile updated successfully!',
+        updateError: 'Failed to update profile. Please try again.',
+        emailNotEditable: 'Email address cannot be changed',
+        viewTitle: 'Your Profile',
+        viewSubtitle: 'View your account information',
+        editProfile: 'Edit Profile',
       }
     }
   },
@@ -90,6 +115,7 @@ const resources = {
       },
       header: {
         editProfile: 'Editar Perfil',
+        profile: 'Perfil',
         logout: 'Sair',
         appTitle: 'Social',
         appSubtitle: 'App',
@@ -108,10 +134,34 @@ const resources = {
         explore: 'Explorar',
         alertEditProfile: 'Funcionalidade de editar perfil em desenvolvimento.',
       },
+      errors: {
+        title: 'Algo deu errado',
+        subtitle: 'Estamos com dificuldades para conectar aos nossos servidores.',
+        retry: 'Tentar Novamente',
+        details: 'Detalhes do Erro',
+        backToLogin: 'Voltar para o Login',
+      },
       common: {
         language: 'Idioma',
         english: 'Inglês',
         portuguese: 'Português',
+        save: 'Salvar',
+        cancel: 'Cancelar',
+        loading: 'Carregando...',
+        success: 'Sucesso',
+        error: 'Erro',
+      },
+      profile: {
+        editTitle: 'Editar Perfil',
+        editSubtitle: 'Atualize as informações da sua conta',
+        nameLabel: 'Nome Completo',
+        passwordLabel: 'Nova Senha (deixe em branco para manter a atual)',
+        updateSuccess: 'Perfil atualizado com sucesso!',
+        updateError: 'Falha ao atualizar o perfil. Por favor, tente novamente.',
+        emailNotEditable: 'O endereço de e-mail não pode ser alterado',
+        viewTitle: 'Seu Perfil',
+        viewSubtitle: 'Visualize as informações da sua conta',
+        editProfile: 'Editar Perfil',
       }
     }
   }

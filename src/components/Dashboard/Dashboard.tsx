@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { Header } from '../Layout/Header';
 import type { User as UserType } from '../../types/auth';
 
+import { useNavigate } from 'react-router-dom';
+
 interface DashboardProps {
     user: UserType;
     onLogout: () => void;
@@ -9,18 +11,13 @@ interface DashboardProps {
 
 export function Dashboard({ user, onLogout }: DashboardProps) {
     const { t } = useTranslation();
-
-    const handleEditProfile = () => {
-        console.log('Redirecting to edit profile...');
-        alert(t('dashboard.alertEditProfile'));
-    };
+    const navigate = useNavigate();
 
     return (
         <div className="min-h-screen bg-white">
             <Header 
                 user={user} 
                 onLogout={onLogout} 
-                onEditProfile={handleEditProfile} 
             />
             
             <main className="max-w-7xl mx-auto px-4 py-8 md:py-12">
@@ -40,7 +37,10 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                             <p className="text-stone-600 mb-6 text-sm leading-relaxed">
                                 {t('dashboard.profileDesc')}
                             </p>
-                            <button className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-colors text-sm font-semibold shadow-sm">
+                            <button 
+                                onClick={() => navigate('/profile')}
+                                className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-colors text-sm font-semibold shadow-sm"
+                            >
                                 {t('dashboard.viewDetails')}
                             </button>
                         </div>

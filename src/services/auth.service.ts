@@ -1,4 +1,5 @@
 import api from '../lib/axios';
+import type { User } from '../types/auth';
 
 export interface LoginResponse {
   access_token: string;
@@ -27,6 +28,16 @@ export const authService = {
 
   register: async (userData: RegisterData) => {
     const { data } = await api.post('/register', userData);
+    return data;
+  },
+
+  getUser: async (): Promise<User> => {
+    const { data } = await api.get<User>('/user');
+    return data;
+  },
+
+  updateUser: async (userData: { name: string; password?: string }): Promise<User> => {
+    const { data } = await api.patch<User>('/user', userData);
     return data;
   },
 };

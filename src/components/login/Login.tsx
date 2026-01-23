@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { authService } from '../../services/auth.service';
 import { PasswordInput } from '../ui/PasswordInput';
 
 interface LoginProps {
-    onSwitchToRegister: () => void;
     onLoginSuccess: (token: string) => void;
 }
 
-export function Login({ onSwitchToRegister, onLoginSuccess }: LoginProps) {
+export function Login({ onLoginSuccess }: LoginProps) {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,7 +28,16 @@ export function Login({ onSwitchToRegister, onLoginSuccess }: LoginProps) {
             onLoginSuccess(data.access_token);
         },
         onError: (error: any) => {
-            setErrorMessage(error.response?.data?.detail || 'Failed to sign in. Please check your credentials.');
+            const detail = error.response?.data?.detail;
+            const message = typeof detail === 'string' 
+                ? detail 
+                : Array.isArray(detail) 
+                    ? detail[0]?.msg || 'Failed to sign in. Please check your credentials.'
+                    : typeof detail === 'object' && detail?.msg
+                        ? detail.msg
+                        : 'Failed to sign in. Please check your credentials.';
+            
+            setErrorMessage(message);
         }
     });
 
@@ -145,12 +154,12 @@ export function Login({ onSwitchToRegister, onLoginSuccess }: LoginProps) {
                 <div className="mt-8 text-center">
                     <p className="text-stone-300 text-sm">
                         {t('auth.dontHaveAccount')}{' '}
-                        <button 
-                            onClick={onSwitchToRegister}
+                        <Link 
+                            to="/register"
                             className="text-white font-semibold hover:text-stone-200 transition-colors bg-transparent border-none p-0 cursor-pointer"
                         >
                             {t('auth.signUp')}
-                        </button>
+                        </Link>
                     </p>
                 </div>
             </div>

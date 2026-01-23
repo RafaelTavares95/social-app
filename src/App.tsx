@@ -1,80 +1,115 @@
-import { useState, useEffect } from 'react'
-import Cookies from 'js-cookie'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 import { Login } from './components/Login/Login'
 import { Register } from './components/Register/Register'
-import { Branding } from './components/Branding/Branding'
 import { Dashboard } from './components/Dashboard/Dashboard'
-import type { User } from './types/auth'
+import { EditProfile } from './components/Profile/EditProfile'
+import { ProfileView } from './components/Profile/ProfileView'
+import { AuthLayout } from './components/Layout/AuthLayout'
+import { MainLayout } from './components/Layout/MainLayout'
+import { FatalError } from './components/ui/FatalError'
+import { LoadingScreen } from './components/ui/LoadingScreen'
+import { useAuth } from './hooks/useAuth'
 
 function App() {
-  const [currentView, setCurrentView] = useState<'login' | 'register' | 'dashboard'>('login');
-  const [user, setUser] = useState<User | null>(null);
+  const {
+    user,
+    isInitializing,
+    fatalError,
+    handleLoginSuccess,
+    handleLogout,
+    handleUpdateUser,
+    resetFatalError
+  } = useAuth();
 
-  // Check for existing session
-  useEffect(() => {
-    const token = Cookies.get('access_token');
-    if (token) {
-      // In a real app, we would fetch the user profile here
-      // Mocking user profile for now
-      setUser({
-        id: '1',
-        name: 'Rafael Tavares',
-        email: 'rafael@example.com',
-        avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rafael'
-      });
-      setCurrentView('dashboard');
-    }
-  }, []);
+  if (fatalError) {
+    return (
+      <FatalError 
+        message={fatalError.message} 
+        details={fatalError.details} 
+        onReset={resetFatalError}
+      />
+    );
+  }
 
-  const handleLogout = () => {
-    Cookies.remove('access_token');
-    setUser(null);
-    setCurrentView('login');
-  };
-
-  const handleLoginSuccess = (_token: string) => {
-    // Mocking user profile after login
-    setUser({
-      id: '1',
-      name: 'Rafael Tavares',
-      email: 'rafael@example.com',
-      avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rafael'
-    });
-    setCurrentView('dashboard');
-  };
-
-  if (currentView === 'dashboard' && user) {
-    return <Dashboard user={user} onLogout={handleLogout} />;
+  if (isInitializing) {
+    return <LoadingScreen />;
   }
 
   return (
-    <div className="min-h-screen w-full bg-emerald-950 bg-gradient-to-br from-emerald-950 via-green-900/50 to-emerald-950 relative overflow-hidden flex items-center justify-center">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px]"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-green-500/10 rounded-full blur-[120px]"></div>
+    <Routes>
+      {/* Auth Routes */}
+      <Route
+        path="/login"
+        element={
+          user ? (
+            <Navigate to="/" replace />
+          ) : (
+            <AuthLayout>
+              <Login onLoginSuccess={handleLoginSuccess} />
+            </AuthLayout>
+          )
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          user ? (
+            <Navigate to="/" replace />
+          ) : (
+            <AuthLayout>
+              <Register />
+            </AuthLayout>
+          )
+        }
+      />
 
-      {/* Main Content Container */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-4 lg:gap-12 items-center">
-        {/* Left Side: Branding (Smaller on mobile, full on desktop) */}
-        <div className="flex items-center justify-center pt-4 lg:pt-0">
-          <Branding />
-        </div>
-
-        {/* Right Side: Form Box */}
-        <div className="flex justify-center lg:justify-start pb-8 lg:pb-0">
-          {currentView === 'login' ? (
-            <Login 
-              onSwitchToRegister={() => setCurrentView('register')} 
-              onLoginSuccess={handleLoginSuccess}
+      {/* Protected Routes */}
+      <Route
+        path="/"
+        element={
+          user ? (
+            <Dashboard 
+              user={user} 
+              onLogout={handleLogout} 
             />
           ) : (
-            <Register onSwitchToLogin={() => setCurrentView('login')} />
-          )}
-        </div>
-      </div>
-    </div>
-  )
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          user ? (
+            <MainLayout user={user} onLogout={handleLogout}>
+              <ProfileView user={user} />
+            </MainLayout>
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/profile/edit"
+        element={
+          user ? (
+            <MainLayout user={user} onLogout={handleLogout}>
+              <EditProfile 
+                user={user} 
+                onUpdateSuccess={handleUpdateUser}
+              />
+            </MainLayout>
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
 }
 
 export default App
