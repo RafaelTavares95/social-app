@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next';
+
 export function Branding() {
+    const { t } = useTranslation();
+    
     return (
         <div className="flex flex-col items-center justify-center h-full px-8">
             {/* Logo Icon */}
@@ -12,15 +16,15 @@ export function Branding() {
 
             {/* App Title */}
             <h1 className="text-3xl md:text-7xl lg:text-8xl font-bold text-white mb-2 md:mb-6 tracking-tight text-center">
-                Social
+                {t('header.appTitle')}
                 <span className="md:block bg-gradient-to-r from-stone-200 to-white bg-clip-text text-transparent ml-2 md:ml-0">
-                    App
+                    {t('header.appSubtitle')}
                 </span>
             </h1>
 
             {/* Tagline - Hidden on Mobile to save space */}
             <p className="hidden md:block text-lg md:text-xl lg:text-2xl text-stone-200/80 text-center max-w-md mb-8 lg:mb-12 leading-relaxed">
-                Connect with people around the world
+                {t('header.tagline')}
             </p>
         </div>
     );

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { authService } from '../../services/auth.service';
 import { PasswordInput } from '../ui/PasswordInput';
 
@@ -8,6 +9,7 @@ interface RegisterProps {
 }
 
 export function Register({ onSwitchToLogin }: RegisterProps) {
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,11 +19,11 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
         mutationFn: () => authService.register({ name, email, password }),
         onSuccess: () => {
             console.log('Registration successful');
-            alert('Account created successfully! Please log in.');
+            alert(t('auth.accountCreatedSuccess'));
             onSwitchToLogin();
         },
         onError: (error: any) => {
-            setErrorMessage(error.response?.data?.detail || 'Failed to create account. Please try again.');
+            setErrorMessage(error.response?.data?.detail || t('auth.createAccountError'));
         }
     });
 
@@ -57,11 +59,11 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
 
     const getStrengthText = () => {
         switch (strength) {
-            case 0: return 'Too short';
-            case 1: return 'Weak';
-            case 2: return 'Fair';
-            case 3: return 'Good';
-            case 4: return 'Strong';
+            case 0: return t('auth.tooShort');
+            case 1: return t('auth.weak');
+            case 2: return t('auth.medium');
+            case 3: return t('auth.good');
+            case 4: return t('auth.strong');
             default: return '';
         }
     };
@@ -82,10 +84,10 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                 {/* Title */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
-                        Join Us
+                        {t('auth.createAccount')}
                     </h1>
                     <p className="text-stone-300/80 text-sm md:text-base">
-                        Create your account to start
+                        {t('auth.joinUs')}
                     </p>
                 </div>
 
@@ -101,7 +103,7 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                     {/* Name Input */}
                     <div className="group">
                         <label htmlFor="name" className="block text-sm font-medium text-stone-200 mb-1.5">
-                            Full Name
+                            {t('auth.name')}
                         </label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -124,7 +126,7 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                     {/* Email Input */}
                     <div className="group">
                         <label htmlFor="email" className="block text-sm font-medium text-stone-200 mb-1.5">
-                            Email
+                            {t('auth.email')}
                         </label>
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -148,7 +150,7 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                     <div className="group">
                         <PasswordInput
                             id="password"
-                            label="Password"
+                            label={t('auth.password')}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="••••••••"
@@ -159,7 +161,7 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                         {password && (
                             <div className="mt-2">
                                 <div className="flex justify-between items-center mb-1">
-                                    <span className="text-[10px] uppercase tracking-wider text-stone-400 font-bold">Strength: {getStrengthText()}</span>
+                                    <span className="text-[10px] uppercase tracking-wider text-stone-400 font-bold">{t('auth.passwordStrength')}: {getStrengthText()}</span>
                                     <span className="text-[10px] text-stone-400">{password.length} chars</span>
                                 </div>
                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden flex gap-1">
@@ -172,9 +174,6 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                                         />
                                     ))}
                                 </div>
-                                <p className="mt-1 text-[10px] text-stone-400/80">
-                                    Use 8+ characters with letters, numbers & symbols
-                                </p>
                             </div>
                         )}
                     </div>
@@ -191,10 +190,10 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
-                                <span>Creating Account...</span>
+                                <span>{t('auth.signingUp')}</span>
                             </>
                         ) : (
-                            <span>Create Account</span>
+                            <span>{t('auth.signUp')}</span>
                         )}
                     </button>
                 </form>
@@ -202,12 +201,12 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                 {/* Login Link */}
                 <div className="mt-8 text-center">
                     <p className="text-stone-300 text-sm">
-                        Already have an account?{' '}
+                        {t('auth.alreadyHaveAccount')}{' '}
                         <button 
                             onClick={onSwitchToLogin}
                             className="text-white font-semibold hover:text-stone-200 transition-colors bg-transparent border-none p-0 cursor-pointer"
                         >
-                            Log In
+                            {t('auth.signIn')}
                         </button>
                     </p>
                 </div>
