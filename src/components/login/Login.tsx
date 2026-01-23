@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
+import { authService } from '../../services/auth.service';
 
 interface LoginProps {
     onSwitchToRegister: () => void;
@@ -7,18 +10,31 @@ interface LoginProps {
 export function Login({ onSwitchToRegister }: LoginProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const loginMutation = useMutation({
+        mutationFn: () => authService.login(email, password),
+        onSuccess: (data) => {
+            // Armazena o token em um cookie de sessão
+            Cookies.set('access_token', data.access_token, { 
+                secure: true, 
+                sameSite: 'strict' 
+            });
+            console.log('Login successful');
+            // Redirecionar usuário aqui no futuro
+        },
+        onError: (error: any) => {
+            setErrorMessage(error.response?.data?.detail || 'Falha ao entrar. Verifique suas credenciais.');
+        }
+    });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
-        
-        // Simula uma chamada de API
-        setTimeout(() => {
-            setIsLoading(false);
-            console.log('Login attempt:', { email, password });
-        }, 1500);
+        setErrorMessage('');
+        loginMutation.mutate();
     };
+
+    const isLoading = loginMutation.isPending;
 
     return (
         <div className="w-full max-w-md">
@@ -42,6 +58,13 @@ export function Login({ onSwitchToRegister }: LoginProps) {
                         Login to continue
                     </p>
                 </div>
+
+                {/* Error Message */}
+                {errorMessage && (
+                    <div className="mb-6 p-3 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 text-sm animate-pulse">
+                        {errorMessage}
+                    </div>
+                )}
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-6">

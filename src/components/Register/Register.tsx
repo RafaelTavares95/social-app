@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { authService } from '../../services/auth.service';
 
 interface RegisterProps {
     onSwitchToLogin: () => void;
@@ -8,10 +10,21 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const registerMutation = useMutation({
+        mutationFn: () => authService.register({ name, email, password }),
+        onSuccess: () => {
+            console.log('Registration successful');
+            alert('Conta criada com sucesso! Agora faça login.');
+            onSwitchToLogin();
+        },
+        onError: (error: any) => {
+            setErrorMessage(error.response?.data?.detail || 'Falha ao criar conta. Tente novamente.');
+        }
+    });
 
     // Cálculo derivado: a força é calculada sempre que o password muda
-    // Usamos useMemo para evitar cálculos em re-renders não relacionados
     const strength = useMemo(() => {
         let score = 0;
         if (password.length === 0) return 0;
@@ -24,14 +37,11 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
-        
-        // Simula uma chamada de API
-        setTimeout(() => {
-            setIsLoading(false);
-            console.log('Register attempt:', { name, email, password });
-        }, 1500);
+        setErrorMessage('');
+        registerMutation.mutate();
     };
+
+    const isLoading = registerMutation.isPending;
 
     const getStrengthColor = () => {
         switch (strength) {
@@ -77,6 +87,13 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
                         Create your account to start
                     </p>
                 </div>
+
+                {/* Error Message */}
+                {errorMessage && (
+                    <div className="mb-6 p-3 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 text-sm animate-pulse">
+                        {errorMessage}
+                    </div>
+                )}
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
