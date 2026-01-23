@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { authService } from '../../services/auth.service';
+import { PasswordInput } from '../ui/PasswordInput';
 
 interface LoginProps {
     onSwitchToRegister: () => void;
@@ -15,16 +16,16 @@ export function Login({ onSwitchToRegister }: LoginProps) {
     const loginMutation = useMutation({
         mutationFn: () => authService.login(email, password),
         onSuccess: (data) => {
-            // Armazena o token em um cookie de sessão
+            // Store the token in a session cookie
             Cookies.set('access_token', data.access_token, { 
                 secure: true, 
                 sameSite: 'strict' 
             });
             console.log('Login successful');
-            // Redirecionar usuário aqui no futuro
+            // Redirect user here in the future
         },
         onError: (error: any) => {
-            setErrorMessage(error.response?.data?.detail || 'Falha ao entrar. Verifique suas credenciais.');
+            setErrorMessage(error.response?.data?.detail || 'Failed to sign in. Please check your credentials.');
         }
     });
 
@@ -92,27 +93,14 @@ export function Login({ onSwitchToRegister }: LoginProps) {
                     </div>
 
                     {/* Password Input */}
-                    <div className="group">
-                        <label htmlFor="password" className="block text-sm font-medium text-stone-200 mb-2">
-                            Password
-                        </label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg className="w-5 h-5 text-emerald-400 group-focus-within:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                </svg>
-                            </div>
-                            <input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-stone-300/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
-                                placeholder="••••••••"
-                                required
-                            />
-                        </div>
-                    </div>
+                    <PasswordInput
+                        id="password"
+                        label="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                    />
 
                     {/* Remember Me & Forgot Password */}
                     <div className="flex items-center justify-between text-sm">

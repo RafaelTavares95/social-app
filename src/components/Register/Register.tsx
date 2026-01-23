@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { authService } from '../../services/auth.service';
+import { PasswordInput } from '../ui/PasswordInput';
 
 interface RegisterProps {
     onSwitchToLogin: () => void;
@@ -16,15 +17,15 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
         mutationFn: () => authService.register({ name, email, password }),
         onSuccess: () => {
             console.log('Registration successful');
-            alert('Conta criada com sucesso! Agora faça login.');
+            alert('Account created successfully! Please log in.');
             onSwitchToLogin();
         },
         onError: (error: any) => {
-            setErrorMessage(error.response?.data?.detail || 'Falha ao criar conta. Tente novamente.');
+            setErrorMessage(error.response?.data?.detail || 'Failed to create account. Please try again.');
         }
     });
 
-    // Cálculo derivado: a força é calculada sempre que o password muda
+    // Derived calculation: strength is calculated whenever the password changes
     const strength = useMemo(() => {
         let score = 0;
         if (password.length === 0) return 0;
@@ -145,25 +146,14 @@ export function Register({ onSwitchToLogin }: RegisterProps) {
 
                     {/* Password Input */}
                     <div className="group">
-                        <label htmlFor="password" className="block text-sm font-medium text-stone-200 mb-1.5">
-                            Password
-                        </label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg className="w-5 h-5 text-emerald-400 group-focus-within:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                </svg>
-                            </div>
-                            <input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-stone-300/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
-                                placeholder="••••••••"
-                                required
-                            />
-                        </div>
+                        <PasswordInput
+                            id="password"
+                            label="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                            required
+                        />
                         
                         {/* Password Strength Indicator */}
                         {password && (
