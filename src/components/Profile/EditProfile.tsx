@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Camera, User as UserIcon, Mail, User as UserIconOutlined } from 'lucide-react';
-import { authService } from '../../services/auth.service';
+import { userService } from '../../services/user.service';
 import { PasswordInput } from '../ui/PasswordInput';
 import type { User } from '../../types/auth';
 
@@ -22,7 +22,7 @@ export function EditProfile({ user, onUpdateSuccess }: EditProfileProps) {
     const [successMessage, setSuccessMessage] = useState('');
 
     const updateMutation = useMutation({
-        mutationFn: () => authService.updateUser({ name, ...(password ? { password } : {}) }),
+        mutationFn: () => userService.updateProfile({ name, ...(password ? { password } : {}) }),
         onSuccess: (updatedUser) => {
             onUpdateSuccess(updatedUser);
             queryClient.invalidateQueries({ queryKey: ['user'] });

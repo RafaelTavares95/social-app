@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { authService } from '../services/auth.service';
+import { userService } from '../services/user.service';
 import type { User } from '../types/auth';
 
 export function useAuth() {
@@ -17,7 +17,7 @@ export function useAuth() {
     if (token) {
       const fetchUser = async () => {
         try {
-          const userData = await authService.getUser();
+          const userData = await userService.getProfile();
           setUser(userData);
         } catch (error: any) {
           console.error('Failed to fetch user:', error);
@@ -49,7 +49,7 @@ export function useAuth() {
 
   const handleLoginSuccess = async () => {
     try {
-      const userData = await authService.getUser();
+      const userData = await userService.getProfile();
       setUser(userData);
       navigate('/');
     } catch (error: any) {
