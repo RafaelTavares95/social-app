@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
@@ -14,16 +14,38 @@ export function Login({ onLoginSuccess }: LoginProps) {
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    // Load remembered email on mount
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('remembered_email');
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberMe(true);
+        }
+    }, []);
 
     const loginMutation = useMutation({
         mutationFn: () => authService.login(email, password),
         onSuccess: (data) => {
-            // Store the token in a session cookie
-            Cookies.set('access_token', data.access_token, { 
-                secure: true, 
-                sameSite: 'strict' 
-            });
+            const cookieOptions: Cookies.CookieAttributes = {
+                secure: true,
+                sameSite: 'strict'
+            };
+
+            if (rememberMe) {
+                // If remember me is checked, tokens expire in 7 days
+                cookieOptions.expires = 7;
+                localStorage.setItem('remembered_email', email);
+            } else {
+                localStorage.removeItem('remembered_email');
+            }
+
+            // Store the tokens
+            Cookies.set('access_token', data.access_token, cookieOptions);
+            Cookies.set('refresh_token', data.refresh_token, cookieOptions);
+            
             console.log('Login successful');
             onLoginSuccess(data.access_token);
         },
@@ -119,6 +141,8 @@ export function Login({ onLoginSuccess }: LoginProps) {
                         <label className="flex items-center cursor-pointer group">
                             <input 
                                 type="checkbox" 
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
                                 className="w-4 h-4 rounded border-white/20 bg-white/10 text-emerald-500 focus:ring-emerald-500/50 focus:ring-offset-0 cursor-pointer"
                             />
                             <span className="ml-2 text-stone-300 group-hover:text-white transition-colors">

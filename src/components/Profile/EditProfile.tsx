@@ -24,13 +24,9 @@ export function EditProfile({ user, onUpdateSuccess }: EditProfileProps) {
     const updateMutation = useMutation({
         mutationFn: () => authService.updateUser({ name, ...(password ? { password } : {}) }),
         onSuccess: (updatedUser) => {
-            setSuccessMessage(t('profile.updateSuccess'));
-            setErrorMessage('');
             onUpdateSuccess(updatedUser);
             queryClient.invalidateQueries({ queryKey: ['user'] });
-            
-            // Clear success message after 3 seconds
-            setTimeout(() => setSuccessMessage(''), 3000);
+            navigate('/profile', { state: { successMessage: t('profile.updateSuccess') } });
         },
         onError: (error: any) => {
             const detail = error.response?.data?.detail;

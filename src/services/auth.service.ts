@@ -3,6 +3,7 @@ import type { User } from '../types/auth';
 
 export interface LoginResponse {
   access_token: string;
+  refresh_token: string;
   token_type: string;
 }
 
@@ -24,6 +25,19 @@ export const authService = {
       },
     });
     return data;
+  },
+
+  refresh: async (refreshToken: string): Promise<LoginResponse> => {
+    const { data } = await api.post<LoginResponse>('/refresh', {
+      refresh_token: refreshToken,
+    });
+    return data;
+  },
+
+  logout: async (refreshToken?: string): Promise<void> => {
+    await api.post('/logout', {
+      refresh_token: refreshToken,
+    });
   },
 
   register: async (userData: RegisterData) => {
