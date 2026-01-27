@@ -56,7 +56,10 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                             <p className="text-stone-600 mb-6 text-sm leading-relaxed">
                                 {t('dashboard.activityDesc')}
                             </p>
-                            <button className="px-6 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl transition-colors text-sm font-semibold">
+                            <button 
+                                onClick={() => navigate('/notifications')}
+                                className="px-6 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl transition-colors text-sm font-semibold"
+                            >
                                 {t('dashboard.viewAll')}
                             </button>
                         </div>

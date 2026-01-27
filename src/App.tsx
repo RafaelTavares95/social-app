@@ -11,6 +11,8 @@ import { FatalError } from './components/ui/FatalError'
 import { LoadingScreen } from './components/ui/LoadingScreen'
 import { useAuth } from './hooks/useAuth'
 
+import { NotificationsPage } from './components/Notifications/NotificationsPage'
+
 function App() {
   const {
     user,
@@ -99,6 +101,18 @@ function App() {
                 user={user} 
                 onUpdateSuccess={handleUpdateUser}
               />
+            </MainLayout>
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          user ? (
+            <MainLayout user={user} onLogout={handleLogout}>
+              <NotificationsPage />
             </MainLayout>
           ) : (
             <Navigate to="/login" replace />

@@ -118,7 +118,7 @@ export function NotificationBell({ userEmail, isEmailConfirmed }: NotificationBe
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white border border-stone-200 rounded-2xl shadow-xl py-2 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+        <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-16 sm:top-full mt-2 w-auto sm:w-80 bg-white border border-stone-200 rounded-2xl shadow-xl py-2 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50">
           {/* Header */}
           <div className="px-4 py-3 border-b border-stone-100 flex items-center justify-between">
             <h3 className="text-sm font-semibold text-emerald-950">
@@ -187,6 +187,19 @@ export function NotificationBell({ userEmail, isEmailConfirmed }: NotificationBe
                 </div>
               ))
             )}
+          </div>
+
+          {/* Footer Link */}
+          <div className="border-t border-stone-100 p-2">
+            <button
+              onClick={() => {
+                navigate('/notifications');
+                setIsOpen(false);
+              }}
+              className="w-full py-2 text-sm text-center text-emerald-600 hover:text-emerald-700 font-medium hover:bg-emerald-50 rounded-xl transition-colors"
+            >
+              {t('notifications.viewAll')}
+            </button>
           </div>
         </div>
       )}

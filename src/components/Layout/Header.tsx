@@ -89,7 +89,7 @@ export function Header({ user, onLogout }: HeaderProps) {
 
                     {/* Dropdown Menu */}
                     {isDropdownOpen && (
-                        <div className="absolute right-0 mt-2 w-56 origin-top-right bg-white border border-stone-200 rounded-2xl shadow-xl py-2 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                        <div className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-2rem)] origin-top-right bg-white border border-stone-200 rounded-2xl shadow-xl py-2 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                             {/* User Header */}
                             <div className="px-4 py-3 sm:hidden border-b border-stone-100 mb-1">
                                 <p className="text-sm font-semibold text-emerald-950 line-clamp-1">{user.name}</p>
