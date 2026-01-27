@@ -3,6 +3,7 @@ import { LogOut, ChevronDown, User, Languages } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { User as UserType } from '../../types/auth';
+import { NotificationBell } from '../ui/NotificationBell';
 
 interface HeaderProps {
     user: UserType;
@@ -49,8 +50,14 @@ export function Header({ user, onLogout }: HeaderProps) {
                     </span>
                 </Link>
 
-                {/* User Area */}
-                <div className="relative" ref={dropdownRef}>
+                {/* Notifications and User Area */}
+                <div className="flex items-center gap-3">
+                    <NotificationBell 
+                        userEmail={user.email} 
+                        isEmailConfirmed={user.confirmed_user} 
+                    />
+                    
+                    <div className="relative" ref={dropdownRef}>
                     <button
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         className="flex items-center space-x-3 p-1 rounded-full hover:bg-stone-100 transition-all duration-300 group"
@@ -122,6 +129,7 @@ export function Header({ user, onLogout }: HeaderProps) {
                             </button>
                         </div>
                     )}
+                    </div>
                 </div>
             </div>
         </header>

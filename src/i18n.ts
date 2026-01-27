@@ -40,6 +40,16 @@ const resources = {
         appSubtitle: 'App',
         tagline: 'Connect with people around the world',
       },
+      notifications: {
+        title: 'Notifications',
+        empty: 'No notifications',
+        markAllRead: 'Mark all as read',
+        bellAriaLabel: 'Notifications',
+        emailConfirmation: {
+          title: 'Confirm Your Email',
+          message: 'Please confirm your email to access all features.',
+        },
+      },
       dashboard: {
         welcomeBack: 'Welcome back, {{name}}!',
         profileTitle: 'Your Profile',
@@ -128,6 +138,16 @@ const resources = {
         appTitle: 'Social',
         appSubtitle: 'App',
         tagline: 'Conecte-se com pessoas ao redor do mundo',
+      },
+      notifications: {
+        title: 'Notificações',
+        empty: 'Nenhuma notificação',
+        markAllRead: 'Marcar todas como lidas',
+        bellAriaLabel: 'Notificações',
+        emailConfirmation: {
+          title: 'Confirme seu Email',
+          message: 'Por favor, confirme seu email para ter acesso a todos os recursos.',
+        },
       },
       dashboard: {
         welcomeBack: 'Bem-vindo de volta, {{name}}!',

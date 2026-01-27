@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { User as UserIcon, Mail, User as UserIconOutlined, Pencil, CheckCircle } from 'lucide-react';
 import type { User } from '../../types/auth';
+import { EmailConfirmationWarning } from '../ui/EmailConfirmationWarning';
 
 interface ProfileViewProps {
     user: User;
@@ -56,6 +57,11 @@ export function ProfileView({ user }: ProfileViewProps) {
                             <CheckCircle className="w-5 h-5 mr-3 text-emerald-500" />
                             <span className="font-medium">{successMessage}</span>
                         </div>
+                    )}
+
+                    {/* Email Confirmation Warning */}
+                    {!user.confirmed_user && (
+                        <EmailConfirmationWarning email={user.email} />
                     )}
 
                     <div className="flex justify-between items-start mb-8">
