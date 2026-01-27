@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Header } from '../Layout/Header';
 import type { User as UserType } from '../../types/auth';
+import { EmailConfirmationWarning } from '../ui/EmailConfirmationWarning';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -26,6 +27,10 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                 <div className="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-green-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
                 <div className="relative z-10">
+                    {!user.confirmed_user && (
+                        <EmailConfirmationWarning email={user.email} />
+                    )}
+
                     <h2 className="text-3xl md:text-4xl font-bold mb-8 text-emerald-950 tracking-tight">
                         {t('dashboard.welcomeBack', { name: user.name })}
                     </h2>

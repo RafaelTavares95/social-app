@@ -52,6 +52,14 @@ const resources = {
         viewAll: 'View All',
         explore: 'Explore',
         alertEditProfile: 'Edit profile feature is under development.',
+        emailConfirmation: {
+          title: 'Confirm Your Email',
+          warning: 'Please confirm your email to access all features.',
+          resend: 'Resend Confirmation',
+          resendSuccess: 'Confirmation email resent!',
+          resendError: 'Error resending email.',
+        },
+
       },
       errors: {
         title: 'Something went wrong',
@@ -133,6 +141,14 @@ const resources = {
         viewAll: 'Ver Tudo',
         explore: 'Explorar',
         alertEditProfile: 'Funcionalidade de editar perfil em desenvolvimento.',
+        emailConfirmation: {
+          title: 'Confirme seu Email',
+          warning: 'Por favor, confirme seu email para ter acesso a todos os recursos.',
+          resend: 'Reenviar confirmação',
+          resendSuccess: 'Email de confirmação reenviado!',
+          resendError: 'Erro ao reenviar email.',
+        },
+
       },
       errors: {
         title: 'Algo deu errado',

@@ -16,4 +16,8 @@ export const userService = {
     const { data } = await api.patch<User>('/user', userData);
     return data;
   },
+
+  resendConfirmation: async (email: string): Promise<void> => {
+    await api.post('/resend-confirmation', { email });
+  },
 };
