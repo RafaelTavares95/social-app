@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { LogOut, ChevronDown, User, Languages } from 'lucide-react';
+import { LogOut, ChevronDown, User, Languages, Menu } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { User as UserType } from '../../types/auth';
@@ -8,9 +8,10 @@ import { NotificationBell } from '../ui/NotificationBell';
 interface HeaderProps {
     user: UserType;
     onLogout: () => void;
+    onToggleSidebar?: () => void;
 }
 
-export function Header({ user, onLogout }: HeaderProps) {
+export function Header({ user, onLogout, onToggleSidebar }: HeaderProps) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const { t, i18n } = useTranslation();
@@ -33,13 +34,23 @@ export function Header({ user, onLogout }: HeaderProps) {
     }, []);
 
     return (
-        <header className="w-full h-16 backdrop-blur-md bg-white/70 border-b border-stone-200 sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between">
-                {/* Application Name */}
-                <Link 
-                    to="/"
-                    className="flex items-center space-x-2 group cursor-pointer"
-                >
+        <header className="w-full h-16 backdrop-blur-md bg-white/70 border-b border-stone-200 fixed top-0 left-0 z-50">
+            <div className="w-full h-full px-4 md:px-6 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                    {/* Mobile Menu Button */}
+                    <button 
+                        onClick={onToggleSidebar}
+                        className="p-2 md:hidden hover:bg-stone-100 rounded-lg text-emerald-700 transition-colors"
+                        aria-label="Toggle menu"
+                    >
+                        <Menu size={24} />
+                    </button>
+
+                    {/* Application Name */}
+                    <Link 
+                        to="/"
+                        className="flex items-center space-x-2 group cursor-pointer"
+                    >
                     <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -49,6 +60,7 @@ export function Header({ user, onLogout }: HeaderProps) {
                         {t('header.appTitle')}<span className="text-emerald-600 font-medium">{t('header.appSubtitle')}</span>
                     </span>
                 </Link>
+                </div>
 
                 {/* Notifications and User Area */}
                 <div className="flex items-center gap-3">

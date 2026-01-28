@@ -91,7 +91,12 @@ const resources = {
           resendSuccess: 'Confirmation email resent!',
           resendError: 'Error resending email.',
         },
-
+      },
+      sidebar: {
+        dashboard: 'Dashboard',
+        profile: 'Profile',
+        notifications: 'Notifications',
+        settings: 'Settings',
       },
       errors: {
         title: 'Something went wrong',
@@ -212,7 +217,12 @@ const resources = {
           resendSuccess: 'Email de confirmação reenviado!',
           resendError: 'Erro ao reenviar email.',
         },
-
+      },
+      sidebar: {
+        dashboard: 'Dashboard',
+        profile: 'Perfil',
+        notifications: 'Notificações',
+        settings: 'Configurações',
       },
       errors: {
         title: 'Algo deu errado',

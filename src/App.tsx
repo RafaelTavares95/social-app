@@ -71,10 +71,11 @@ function App() {
         path="/"
         element={
           user ? (
-            <Dashboard 
-              user={user} 
-              onLogout={handleLogout} 
-            />
+            <MainLayout user={user} onLogout={handleLogout}>
+              <Dashboard 
+                user={user} 
+              />
+            </MainLayout>
           ) : (
             <Navigate to="/login" replace />
           )
