@@ -13,7 +13,7 @@ export function Dashboard({ user }: DashboardProps) {
 
     return (
         <div className="relative z-10">
-            {!user.confirmed_user && (
+            {!user.confirmed && (
                 <EmailConfirmationWarning email={user.email} />
             )}
 

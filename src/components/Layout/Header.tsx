@@ -66,7 +66,7 @@ export function Header({ user, onLogout, onToggleSidebar }: HeaderProps) {
                 <div className="flex items-center gap-3">
                     <NotificationBell 
                         userEmail={user.email} 
-                        isEmailConfirmed={user.confirmed_user} 
+                        isEmailConfirmed={user.confirmed} 
                     />
                     
                     <div className="relative" ref={dropdownRef}>

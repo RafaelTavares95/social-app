@@ -3,5 +3,5 @@ export interface User {
     name: string;
     email: string;
     avatarUrl?: string;
-    confirmed_user: boolean;
+    confirmed: boolean;
 }

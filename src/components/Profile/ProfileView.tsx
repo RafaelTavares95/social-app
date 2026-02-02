@@ -60,7 +60,7 @@ export function ProfileView({ user }: ProfileViewProps) {
                     )}
 
                     {/* Email Confirmation Warning */}
-                    {!user.confirmed_user && (
+                    {!user.confirmed && (
                         <EmailConfirmationWarning email={user.email} />
                     )}
 

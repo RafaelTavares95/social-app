@@ -27,8 +27,8 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         // Refresh failed, probably session expired or invalid refresh cookie
-        // The backend should have cleared the cookies already, but we redirect to login
-        window.location.href = '/login';
+        // The backend should have cleared the cookies already.
+        // We just reject the error; the application logic (e.g., useAuth) should handle redirection.
         return Promise.reject(refreshError);
       }
     }
