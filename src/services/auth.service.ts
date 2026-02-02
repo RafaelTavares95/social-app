@@ -1,10 +1,12 @@
 import api from '../lib/axios';
 
-
 export interface LoginResponse {
-  access_token: string;
-  refresh_token: string;
-  token_type: string;
+  user?: {
+    id: string;
+    email: string;
+    name: string;
+  };
+  // tokens are now handled via httpOnly cookies
 }
 
 export interface RegisterData {
@@ -27,17 +29,12 @@ export const authService = {
     return data;
   },
 
-  refresh: async (refreshToken: string): Promise<LoginResponse> => {
-    const { data } = await api.post<LoginResponse>('/refresh', {
-      refresh_token: refreshToken,
-    });
-    return data;
+  refresh: async (): Promise<void> => {
+    await api.post('/refresh');
   },
 
-  logout: async (refreshToken?: string): Promise<void> => {
-    await api.post('/logout', {
-      refresh_token: refreshToken,
-    });
+  logout: async (): Promise<void> => {
+    await api.post('/logout');
   },
 
   register: async (userData: RegisterData) => {

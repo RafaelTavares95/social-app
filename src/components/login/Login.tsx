@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { authService } from '../../services/auth.service';
 import { PasswordInput } from '../ui/PasswordInput';
 
 interface LoginProps {
-    onLoginSuccess: (token: string) => void;
+    onLoginSuccess: () => void;
 }
 
 export function Login({ onLoginSuccess }: LoginProps) {
@@ -28,26 +27,15 @@ export function Login({ onLoginSuccess }: LoginProps) {
 
     const loginMutation = useMutation({
         mutationFn: () => authService.login(email, password),
-        onSuccess: (data) => {
-            const cookieOptions: Cookies.CookieAttributes = {
-                secure: true,
-                sameSite: 'strict'
-            };
-
+        onSuccess: () => {
             if (rememberMe) {
-                // If remember me is checked, tokens expire in 7 days
-                cookieOptions.expires = 7;
                 localStorage.setItem('remembered_email', email);
             } else {
                 localStorage.removeItem('remembered_email');
             }
-
-            // Store the tokens
-            Cookies.set('access_token', data.access_token, cookieOptions);
-            Cookies.set('refresh_token', data.refresh_token, cookieOptions);
             
             console.log('Login successful');
-            onLoginSuccess(data.access_token);
+            onLoginSuccess();
         },
         onError: (error: any) => {
             const detail = error.response?.data?.detail;

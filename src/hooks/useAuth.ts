@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { userService } from '../services/user.service';
+import { authService } from '../services/auth.service';
 import type { User } from '../types/auth';
 
 export function useAuth() {
@@ -13,38 +13,38 @@ export function useAuth() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = Cookies.get('access_token');
-    if (token) {
-      const fetchUser = async () => {
-        try {
-          const userData = await userService.getProfile();
-          setUser(userData);
-        } catch (error: any) {
-          console.error('Failed to fetch user:', error);
-          if (!error.response || error.response.status >= 500) {
-            setFatalError({ 
-              message: t('errors.subtitle'), 
-              details: error.message 
-            });
-          } else {
-            Cookies.remove('access_token');
-            setUser(null);
-          }
-        } finally {
-          setIsInitializing(false);
+    const fetchUser = async () => {
+      try {
+        const userData = await userService.getProfile();
+        setUser(userData);
+      } catch (error: any) {
+        // If it's a 401, we're simply not logged in
+        if (error.response?.status === 401) {
+          setUser(null);
+        } else if (!error.response || error.response.status >= 500) {
+          setFatalError({ 
+            message: t('errors.subtitle'), 
+            details: error.message 
+          });
+        } else {
+          setUser(null);
         }
-      };
-      fetchUser();
-    } else {
-      setUser(null);
-      setIsInitializing(false);
-    }
+      } finally {
+        setIsInitializing(false);
+      }
+    };
+    fetchUser();
   }, [t]);
 
-  const handleLogout = () => {
-    Cookies.remove('access_token');
-    setUser(null);
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      setUser(null);
+      navigate('/login');
+    }
   };
 
   const handleLoginSuccess = async () => {

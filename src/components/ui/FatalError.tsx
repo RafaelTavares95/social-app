@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 interface FatalErrorProps {
@@ -13,7 +12,6 @@ export function FatalError({ message, details, onReset }: FatalErrorProps) {
   const navigate = useNavigate();
 
   const handleBackToLogin = () => {
-    Cookies.remove('access_token');
     onReset();
     navigate('/login');
   };
