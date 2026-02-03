@@ -31,6 +31,15 @@ const resources = {
         strong: 'Strong',
         accountCreatedSuccess: 'Account created successfully! Please log in.',
         createAccountError: 'Failed to create account. Please try again.',
+        emailConfirmation: {
+          title: 'Email Confirmation',
+          success: 'Email confirmed successfully!',
+          error: 'Failed to confirm email.',
+          message: 'Your email has been successfully verified. You can now access all features of the application.',
+          errorMessage: 'The confirmation link is invalid or has expired.',
+          backToSite: 'Back to Site',
+          verifying: 'Verifying your email...'
+        }
       },
       header: {
         editProfile: 'Edit Profile',
@@ -157,6 +166,15 @@ const resources = {
         strong: 'Forte',
         accountCreatedSuccess: 'Conta criada com sucesso! Por favor, faça login.',
         createAccountError: 'Falha ao criar conta. Por favor, tente novamente.',
+        emailConfirmation: {
+          title: 'Confirmação de E-mail',
+          success: 'E-mail confirmado com sucesso!',
+          error: 'Falha ao confirmar e-mail.',
+          message: 'Seu e-mail foi verificado com sucesso. Agora você pode acessar todos os recursos do aplicativo.',
+          errorMessage: 'O link de confirmação é inválido ou expirou.',
+          backToSite: 'Voltar para o Site',
+          verifying: 'Verificando seu e-mail...'
+        }
       },
       header: {
         editProfile: 'Editar Perfil',

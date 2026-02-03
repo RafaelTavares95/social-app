@@ -70,6 +70,15 @@ export function useAuth() {
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    try {
+      const userData = await userService.getProfile();
+      setUser(userData);
+    } catch (error) {
+      console.error('Failed to refresh user:', error);
+    }
+  };
+
   return {
     user,
     isInitializing,
@@ -77,6 +86,7 @@ export function useAuth() {
     handleLoginSuccess,
     handleLogout,
     handleUpdateUser,
-    resetFatalError
+    resetFatalError,
+    refreshUser
   };
 }

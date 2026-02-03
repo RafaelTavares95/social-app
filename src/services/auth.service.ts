@@ -41,4 +41,9 @@ export const authService = {
     const { data } = await api.post('/register', userData);
     return data;
   },
+
+  confirmEmail: async (token: string) => {
+    const { data } = await api.get(`/confirm/${token}`);
+    return data;
+  },
 };

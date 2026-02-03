@@ -9,6 +9,7 @@ import { AuthLayout } from './components/Layout/AuthLayout'
 import { MainLayout } from './components/Layout/MainLayout'
 import { FatalError } from './components/ui/FatalError'
 import { LoadingScreen } from './components/ui/LoadingScreen'
+import { EmailConfirmation } from './components/Auth/EmailConfirmation'
 import { useAuth } from './hooks/useAuth'
 
 import { NotificationsPage } from './components/Notifications/NotificationsPage'
@@ -21,7 +22,8 @@ function App() {
     handleLoginSuccess,
     handleLogout,
     handleUpdateUser,
-    resetFatalError
+    resetFatalError,
+    refreshUser
   } = useAuth();
 
   if (fatalError) {
@@ -64,6 +66,10 @@ function App() {
             </AuthLayout>
           )
         }
+      />
+      <Route
+        path="/confirm-email/:token"
+        element={<EmailConfirmation onConfirmSuccess={refreshUser} />}
       />
 
       {/* Protected Routes */}
