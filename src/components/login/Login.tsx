@@ -137,9 +137,9 @@ export function Login({ onLoginSuccess }: LoginProps) {
                                 {t('auth.rememberMe')}
                             </span>
                         </label>
-                        <a href="#" className="text-stone-300 hover:text-white transition-colors font-medium">
+                        <Link to="/forgot-password" className="text-stone-300 hover:text-white transition-colors font-medium">
                             {t('auth.forgotPassword')}
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Submit Button */}

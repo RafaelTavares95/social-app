@@ -39,6 +39,16 @@ const resources = {
           errorMessage: 'The confirmation link is invalid or has expired.',
           backToSite: 'Back to Site',
           verifying: 'Verifying your email...'
+        },
+        forgotPasswordPage: {
+          title: 'Reset Password',
+          subtitle: 'Enter your email to receive recovery instructions',
+          emailLabel: 'Email Address',
+          sendButton: 'Send Instructions',
+          sending: 'Sending...',
+          successTitle: 'Check Your Email',
+          successMessage: 'We have sent password recovery instructions to your email.',
+          backToLogin: 'Back to Login'
         }
       },
       header: {
@@ -174,6 +184,16 @@ const resources = {
           errorMessage: 'O link de confirmação é inválido ou expirou.',
           backToSite: 'Voltar para o Site',
           verifying: 'Verificando seu e-mail...'
+        },
+        forgotPasswordPage: {
+          title: 'Recuperar Senha',
+          subtitle: 'Digite seu e-mail para receber as instruções de recuperação',
+          emailLabel: 'Endereço de E-mail',
+          sendButton: 'Enviar Instruções',
+          sending: 'Enviando...',
+          successTitle: 'Verifique seu E-mail',
+          successMessage: 'Enviamos as instruções de recuperação de senha para o seu e-mail.',
+          backToLogin: 'Voltar para o Login'
         }
       },
       header: {

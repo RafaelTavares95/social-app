@@ -46,4 +46,9 @@ export const authService = {
     const { data } = await api.get(`/confirm/${token}`);
     return data;
   },
+
+  passwordResetRequest: async (email: string) => {
+    const { data } = await api.post('/password-reset-request', { email });
+    return data;
+  },
 };
