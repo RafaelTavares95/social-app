@@ -14,13 +14,25 @@ export function useAuth() {
 
   useEffect(() => {
     const fetchUser = async () => {
+      const publicPaths = ['/login', '/register', '/forgot-password', '/reset-password', '/confirm-email'];
+      const isPublicPath = publicPaths.some(path => window.location.pathname.startsWith(path));
+      const hasSessionIndicator = localStorage.getItem('social_app_session') === 'active';
+
+      // Skip fetching if on a public path and no session indicator is present
+      if (isPublicPath && !hasSessionIndicator) {
+        setIsInitializing(false);
+        return;
+      }
+
       try {
         const userData = await userService.getProfile();
         setUser(userData);
+        localStorage.setItem('social_app_session', 'active');
       } catch (error: any) {
         // If it's a 401, we're simply not logged in
         if (error.response?.status === 401) {
           setUser(null);
+          localStorage.removeItem('social_app_session');
         } else if (!error.response || error.response.status >= 500) {
           setFatalError({ 
             message: t('errors.subtitle'), 
@@ -28,6 +40,7 @@ export function useAuth() {
           });
         } else {
           setUser(null);
+          localStorage.removeItem('social_app_session');
         }
       } finally {
         setIsInitializing(false);
@@ -43,6 +56,7 @@ export function useAuth() {
       console.error('Logout failed:', error);
     } finally {
       setUser(null);
+      localStorage.removeItem('social_app_session');
       navigate('/login');
     }
   };
@@ -51,6 +65,7 @@ export function useAuth() {
     try {
       const userData = await userService.getProfile();
       setUser(userData);
+      localStorage.setItem('social_app_session', 'active');
       navigate('/');
     } catch (error: any) {
       console.error('Failed to fetch user after login:', error);
@@ -74,8 +89,10 @@ export function useAuth() {
     try {
       const userData = await userService.getProfile();
       setUser(userData);
+      localStorage.setItem('social_app_session', 'active');
     } catch (error) {
       console.error('Failed to refresh user:', error);
+      localStorage.removeItem('social_app_session');
     }
   };
 

@@ -49,6 +49,20 @@ const resources = {
           successTitle: 'Check Your Email',
           successMessage: 'We have sent password recovery instructions to your email.',
           backToLogin: 'Back to Login'
+        },
+        resetPasswordPage: {
+          title: 'Reset Your Password',
+          subtitle: 'Create a new secure password for your account',
+          passwordLabel: 'New Password',
+          confirmPasswordLabel: 'Confirm New Password',
+          submitButton: 'Reset Password',
+          resetting: 'Resetting...',
+          passwordsDoNotMatch: 'Passwords do not match',
+          successTitle: 'Password Updated',
+          successMessage: 'Your password has been reset successfully. You can now log in with your new password.',
+          verifying: 'Verifying your reset token...',
+          invalidToken: 'The password reset link is invalid or has expired.',
+          tokenVerified: 'Token verified. You can now reset your password.'
         }
       },
       header: {
@@ -194,6 +208,20 @@ const resources = {
           successTitle: 'Verifique seu E-mail',
           successMessage: 'Enviamos as instruções de recuperação de senha para o seu e-mail.',
           backToLogin: 'Voltar para o Login'
+        },
+        resetPasswordPage: {
+          title: 'Redefinir Sua Senha',
+          subtitle: 'Crie uma nova senha segura para sua conta',
+          passwordLabel: 'Nova Senha',
+          confirmPasswordLabel: 'Confirmar Nova Senha',
+          submitButton: 'Redefinir Senha',
+          resetting: 'Redefinindo...',
+          passwordsDoNotMatch: 'As senhas não coincidem',
+          successTitle: 'Senha Atualizada',
+          successMessage: 'Sua senha foi redefinida com sucesso. Você já pode entrar com sua nova senha.',
+          verifying: 'Verificando seu token de recuperação...',
+          invalidToken: 'O link de recuperação de senha é inválido ou expirou.',
+          tokenVerified: 'Token verificado. Você já pode redefinir sua senha.'
         }
       },
       header: {
