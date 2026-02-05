@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
@@ -15,13 +15,24 @@ export function Register({ }: RegisterProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [countdown, setCountdown] = useState(5);
+
+    // Countdown effect for redirect after successful registration
+    useEffect(() => {
+        if (successMessage && countdown > 0) {
+            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+            return () => clearTimeout(timer);
+        } else if (successMessage && countdown === 0) {
+            navigate('/login');
+        }
+    }, [successMessage, countdown, navigate]);
 
     const registerMutation = useMutation({
         mutationFn: () => authService.register({ name, email, password }),
         onSuccess: () => {
             console.log('Registration successful');
-            alert(t('auth.accountCreatedSuccess'));
-            navigate('/login');
+            setSuccessMessage(t('auth.accountCreatedSuccess'));
         },
         onError: (error: any) => {
             const detail = error.response?.data?.detail;
@@ -108,8 +119,40 @@ export function Register({ }: RegisterProps) {
                     </div>
                 )}
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Success Message */}
+                {successMessage ? (
+                    <div className="text-center space-y-6">
+                        {/* Success Icon */}
+                        <div className="flex justify-center">
+                            <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        {/* Success Text */}
+                        <div>
+                            <h2 className="text-2xl font-bold text-white mb-2">{t('auth.success')}</h2>
+                            <p className="text-emerald-300 text-lg">{successMessage}</p>
+                        </div>
+                        
+                        {/* Redirect Message */}
+                        <p className="text-stone-300 text-sm">
+                            {t('auth.redirectingToLogin')} <span className="text-emerald-400 font-bold">{countdown}</span> {t('auth.seconds')}...
+                        </p>
+                        
+                        {/* Go to Login Button */}
+                        <Link
+                            to="/login"
+                            className="inline-block w-full py-3 px-4 bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-700 hover:to-emerald-900 text-white font-semibold rounded-xl shadow-lg transform transition-all duration-300 hover:scale-[1.02] hover:shadow-emerald-500/30 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                        >
+                            {t('auth.goToLogin')}
+                        </Link>
+                    </div>
+                ) : (
+                    /* Form */
+                    <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Name Input */}
                     <div className="group">
                         <label htmlFor="name" className="block text-sm font-medium text-stone-200 mb-1.5">
@@ -207,19 +250,22 @@ export function Register({ }: RegisterProps) {
                         )}
                     </button>
                 </form>
+                )}
 
-                {/* Login Link */}
-                <div className="mt-8 text-center">
-                    <p className="text-stone-300 text-sm">
-                        {t('auth.alreadyHaveAccount')}{' '}
-                        <Link 
-                            to="/login"
-                            className="text-white font-semibold hover:text-stone-200 transition-colors bg-transparent border-none p-0 cursor-pointer"
-                        >
-                            {t('auth.signIn')}
-                        </Link>
-                    </p>
-                </div>
+                {/* Login Link - only show when not showing success message */}
+                {!successMessage && (
+                    <div className="mt-8 text-center">
+                        <p className="text-stone-300 text-sm">
+                            {t('auth.alreadyHaveAccount')}{' '}
+                            <Link 
+                                to="/login"
+                                className="text-white font-semibold hover:text-stone-200 transition-colors bg-transparent border-none p-0 cursor-pointer"
+                            >
+                                {t('auth.signIn')}
+                            </Link>
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     );
